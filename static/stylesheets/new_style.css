@@ -1,0 +1,45 @@
+.main-title{
+font-family: "Nunito";
+text-align: center;
+font-size: 4em;
+}
+.buttons{
+font-family: "Nunito";
+grid-template-columns: 2fr 1fr 2fr;
+display:grid;
+}
+.button-3{
+border:none;
+height: 6em;
+font-size: 3em;
+}
+
+.schedule {
+  display: grid;
+  grid-template-columns: 1fr 3fr 3fr;
+  grid-template-rows: repeat(74, 20px);
+  font-family: "Nunito";
+}
+.time-row{
+visibility: hidden;
+font-size: 1em;
+}
+.field{
+text-align: center;
+}
+.event {
+display: block;
+width: 100%;
+height: 100%;
+text-align: center;
+font-size: 2em;
+color: #FEFCFB;
+}
+.closed {
+display: block;
+width: 100%;
+height: 100%;
+text-align: center;
+font-size: 2em;
+color: #FEFCFB;
+}
