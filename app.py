@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 from design import colors
 from html_generator import *
@@ -12,6 +12,11 @@ def toDate(dateString):
 
 @app.route("/")
 def homepage():
+    return render_template("homepage.html")
+
+
+@app.route("/calendar")
+def calendar():
     today = request.args.get('date', default=datetime.today(), type=toDate)
     month = today.month
     day = today.day
