@@ -15,21 +15,38 @@ def homepage():
     return render_template("homepage.html")
 
 
-@app.route("/calendar")
-def calendar():
+@app.route("/calendar<id>/") # Either ARC or LTP
+def calendar(id):
     today = request.args.get('date', default=datetime.today(), type=toDate)
     month = today.month
     day = today.day
     year = today.year
-    opening_and_closing = webscraper.open_and_closing_times(today)
+    if id == "":
+        id = "ARC"
+    if id == "ARC":
+        location_id = 1
+        field_one_id = 249
+        field_two_id = 250
+        other_id = "LTP"
+    elif id == "LTP":
+        location_id = 10
+        field_one_id = 386 # NE Turf Field
+        field_two_id = 384 # NW Turf Field
+        other_id="ARC"
+
+    opening_and_closing = webscraper.open_and_closing_times(today, location_id)
     events = []
     color_iter = 0
-    for event in webscraper.turf_events(month, day, year):
+    for event in webscraper.turf_events(month, day, year, location_id, field_one_id, field_two_id):
         name = event['eventName']
         start_time = datetime.strptime(event['timeBookingStart'], '%Y-%m-%dT%H:%M:%S')
         end_time = datetime.strptime(event['timeBookingEnd'], '%Y-%m-%dT%H:%M:%S')
-        field = int(event['roomID']) - 248# roomID 249 is field 1, roomID 250 is field 2
-        # for now
+        if int(event['roomID']) == field_one_id:
+            field = 1
+        elif int(event['roomID']) == field_two_id:
+            field = 2
+        else:
+            raise Exception("roomID from the webscraper doesn't match the roomIDs in app.py")
         events.append({
             'name':name,
             'start_time':start_time,
@@ -38,12 +55,13 @@ def calendar():
             'color':colors[color_iter % len(colors)]
         })
         color_iter += 1
-    html = header_html()
+    html = header_html(id)
     html += "<body>"
-    html += title_and_date_html(today)
+    html += title_and_date_html(today, id)
     html += generate_schedule(events)
-    html += generate_closed_blocks(opening_and_closing)
+    html += generate_closed_blocks(opening_and_closing, id)
     html += "</div>"
+    html += generate_footer(other_id)
     html += "</body>"
     return html
 
