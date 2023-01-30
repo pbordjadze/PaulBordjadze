@@ -30,7 +30,7 @@ def header_html():
     <header>
     <meta charset="UTF-8">
     <title>Turf Schedule</title>
-    <link rel="stylesheet" type="text/css" href="static/stylesheets/new_style.css"/>
+    <link rel="stylesheet" type="text/css" href="static/stylesheets/schedule_style.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
     </header>
     """
