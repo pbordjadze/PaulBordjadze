@@ -15,24 +15,32 @@ def homepage():
     return render_template("homepage.html")
 
 
-@app.route("/calendar<id>/") # Either ARC or LTP
+@app.route("/calendar<id>/") # ARC, JOS, or LTP
 def calendar(id):
     today = request.args.get('date', default=datetime.today(), type=toDate)
     month = today.month
     day = today.day
     year = today.year
-    if id == "":
-        id = "ARC"
+    other_ids = ["ARC", "JOS", "LTP"]
     if id == "ARC":
         location_id = 1
         field_one_id = 249
         field_two_id = 250
-        other_id = "LTP"
     elif id == "LTP":
         location_id = 10
         field_one_id = 386 # NE Turf Field
         field_two_id = 384 # NW Turf Field
-        other_id="ARC"
+    elif id == "JOS":
+        location_id = 4
+        field_one_id = 0
+        field_two_id = 322
+    else:
+        id = "ARC"
+        location_id = 1
+        field_one_id = 249
+        field_two_id = 250
+    other_ids.remove(id)
+
 
     opening_and_closing = webscraper.open_and_closing_times(today, location_id)
     events = []
@@ -61,7 +69,7 @@ def calendar(id):
     html += generate_schedule(events)
     html += generate_closed_blocks(opening_and_closing, id)
     html += "</div>"
-    html += generate_footer(other_id)
+    html += generate_footer(other_ids)
     html += "</body>"
     return html
 

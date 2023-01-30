@@ -1,6 +1,5 @@
 from datetime import datetime
 import json
-from pprint import pprint
 
 import requests
 
@@ -22,11 +21,13 @@ def open_and_closing_times(date: datetime, id):
     url = f"https://recsports.osu.edu/fms/Home/GetHours?id={id}&startDate={month}%2F{day}%2F{year}"
     raw_json = requests.get(url, headers=headers).text
     days_hours = json.loads(raw_json)['hours']
+    today = None
     for i in days_hours:
         if i['hourDate'] == f"{month}/{day}/{year}":
             today = i
             break
-
+    if today is None:
+        return None
     if today['closedAllDay'] == "true":
         return None
     #return today['openTime']
@@ -41,6 +42,3 @@ def turf_events(month, day, year, id, field_one, field_two):
     turf_events = [event for event in event_list if event["roomID"] == field_one or event["roomID"] == field_two]
 
     return turf_events
-
-if __name__ == "__main__":
-    print(turf_events())

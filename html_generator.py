@@ -45,9 +45,13 @@ def title_and_date_html(date_of_page: datetime, id: str):
     tomorrow_link = tomorrow.strftime(f'/calendar{id}/?date=%Y-%m-%d')
     display_id = id
     if id == "LTP":
-        id = "Lincoln Tower Park"
+        id = "Lincoln Tower Park Turf"
+    if id == "ARC":
+        id = "ARC Turf"
+    if id == "JOS":
+        id = "JOS Courts"
     html = f"""
-    <p class="main-title">{id} Turf Schedule</p>
+    <p class="main-title">{id} Schedule</p>
     <p class="main-title">{date_of_page.strftime('%A, %b %d %Y')}</p>
     <div class="buttons">
     <button class="button-3" style="grid-row: 1; grid-column: 1" "role="button" onclick="window.location.href='{previous_link}'">Previous</button>
@@ -102,10 +106,11 @@ def generate_schedule(events: t.List[t.Dict], open_time=None, close_time=None):
 
     return html
 
-def generate_footer(other_id):
+def generate_footer(other_ids):
     html = '<div class="footer">\n'
     html += f'<p class="footer-paragraph"><a href="/" class="home-link">Home</a></p>\n'
-    html += f'<p class="footer-paragraph"><a href="/calendar{other_id}" class="other-link">{other_id} schedule</a></p>\n'
+    for other_id in other_ids:
+        html += f'<p class="footer-paragraph"><a href="/calendar{other_id}" class="other-link">{other_id} schedule</a></p>\n'
     for i in range(5):
         html += f'<p class="buffer">Buffer</p>\n'
     html += "</div>\n"
