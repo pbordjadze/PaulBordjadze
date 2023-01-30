@@ -14,7 +14,7 @@ def generate_closed_blocks(times: t.List, id: str):
         open_string = times[0].strftime("%I:%M %p")
         close_string = times[1].strftime("%I:%M %p")
         html = ""
-        if open > base:
+        if open > base and id != "LTP":
             html += f'<p class="closed" style="background-color: {closed_color}; grid-row: 2 / {int(open_row)}; grid-column: 2 / 4">{id} CLOSED UNTIL<br>{open_string}</p>\n'
         if close != datetime(1900, 1, 1, 0):
             html += f'<p class="closed" style="background-color: {closed_color}; grid-row: {int(close_row)} / 79; grid-column: 2 / 4">{id} CLOSES AT<br>{close_string}</p>\n'
@@ -65,9 +65,12 @@ def generate_event(event: t.Dict):
     end_row = ((end - base)/timedelta(minutes=15)) + 2
     if end == datetime(1900, 1, 1, 0):
         end_row = 77
+    small = ""
+    if end_row - start_row < 6:
+        small = "small-"
     time_string = event['start_time'].strftime("%I:%M %p") + " - " + event['end_time'].strftime("%I:%M %p")
 
-    html = f'<p class="event" style="background-color: {event["color"]}; grid-row: {int(start_row)} / {int(end_row)}; grid-column: {event["field"] + 1}">{event["name"]}<br>{time_string}</p>\n'
+    html = f'<p class="{small}event" style="background-color: {event["color"]}; grid-row: {int(start_row)} / {int(end_row)}; grid-column: {event["field"] + 1}">{event["name"]}<br>{time_string}</p>\n'
     return html
 
 def generate_schedule(events: t.List[t.Dict], open_time=None, close_time=None):
