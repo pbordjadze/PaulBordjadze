@@ -91,9 +91,8 @@ def generate_schedule(events: t.List[t.Dict], open_time=None, close_time=None):
             visible = "visibility: visible; "
         html += f'\t\t<p class="time-row" style="{visible}grid-row: {i}; grid-column: 1">{time.strftime("%I:%M %p")}</p>\n'
         time += timedelta(minutes=15)
-    for i in range(75, 80):
-        html += f'<p class="time-row" style="grid-row: {i}; grid-column: 1">buffer</p>'
-    # One extra row just looks nicer
+    for i in range(75, 77):
+        html += f'<p class="time-row buffer" style="grid-row: {i}; grid-column: 1">buffer</p>'
     for event in events:
         html += generate_event(event)
 
@@ -104,5 +103,7 @@ def generate_footer(other_id):
     html = '<div class="footer">\n'
     html += f'<p class="footer-paragraph"><a href="/" class="home-link">Home</a></p>\n'
     html += f'<p class="footer-paragraph"><a href="/calendar{other_id}" class="other-link">{other_id} schedule</a></p>\n'
+    for i in range(5):
+        html += f'<p class="buffer">Buffer</p>\n'
     html += "</div>\n"
     return html

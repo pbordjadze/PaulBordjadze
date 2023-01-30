@@ -24,6 +24,11 @@ font-size: 3em;
 visibility: hidden;
 font-size: 1em;
 }
+.buffer{
+visibility: hidden;
+font-size: 1em;
+}
+
 .field{
 text-align: center;
 }
@@ -45,6 +50,7 @@ color: #FEFCFB;
 }
 .footer{
 display: grid;
+margin: 4em
 }
 .footer-paragraph{
 text-align: center;
